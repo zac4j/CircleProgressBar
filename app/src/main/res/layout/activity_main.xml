@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.zac4j.sample.MainActivity"
+    >
+
+  <com.zac4j.library.CircleProgressBar
+      android:id="@id/progress_bar"
+      android:layout_width="32dp"
+      android:layout_height="32dp"
+      app:fillColor="@color/white"
+      app:strokeBgColor="@color/gray_light"
+      app:strokeColor="@color/purple"
+      app:strokeWidth="4dp"
+      />
+
+</RelativeLayout>

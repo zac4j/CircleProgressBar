@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <declare-styleable name="CircleProgressBar">
+    <!-- Color of the filled circle. -->
+    <attr format="color" name="fillColor"/>
+    <!-- Width of the stroke used to draw circles. -->
+    <attr format="dimension" name="strokeWidth"/>
+    <!-- Color of the donut circles.  -->
+    <attr format="color" name="strokeColor"/>
+    <!-- Color of the donut circle background.  -->
+    <attr format="color" name="strokeBgColor"/>
+    <!--Text of progressbar center text -->
+    <attr name="android:text"/>
+    <!--Text size of progressbar center text -->
+    <attr name="android:textSize"/>
+    <!--Text color of progressbar center text -->
+    <attr name="android:textColor"/>
+    <!-- ProgressBar style -->
+    <attr name="style">
+      <enum name="donut" value="0"/>
+      <enum name="wave" value="1"/>
+      <enum name="watch" value="2"/>
+    </attr>
+
+  </declare-styleable>
+</resources>
