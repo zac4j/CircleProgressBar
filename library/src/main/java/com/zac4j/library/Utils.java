@@ -15,7 +15,7 @@ class Utils {
         context.getResources().getDisplayMetrics());
   }
 
-  static int spToPixel(Context context, float sp) {
+  static int sp2Pixel(Context context, float sp) {
     return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, sp,
         context.getResources().getDisplayMetrics());
   }
