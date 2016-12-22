@@ -1,4 +1,4 @@
-package com.zac4j.library;
+package com.zac4j.widget;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -7,7 +7,9 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.support.annotation.ColorInt;
 import android.support.annotation.IntDef;
+import android.support.annotation.Size;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.widget.ProgressBar;
@@ -45,6 +47,7 @@ public class CircleProgressBar extends ProgressBar {
   private final float mProgressBarSizeSmall;
   private final float mProgressBarSizeMedium;
   private final float mProgressBarSizeLarger;
+  private boolean mIsShowText;
 
   @Retention(RetentionPolicy.SOURCE) @IntDef({ SMALL, MEDIUM, LARGER }) private @interface Size {
   }
@@ -97,11 +100,14 @@ public class CircleProgressBar extends ProgressBar {
     mPaintStrokeBg.setColor(
         a.getColor(R.styleable.CircleProgressBar_strokeBgColor, defaultStrokeBgColor));
 
-    mPaintText.setTextAlign(Paint.Align.CENTER);
-    mPaintText.setTextSize(a.getDimensionPixelSize(R.styleable.CircleProgressBar_android_textSize,
-        Utils.sp2Pixel(context, 14)));
-    mPaintText.setColor(
-        a.getColor(R.styleable.CircleProgressBar_android_textColor, defaultTextColor));
+    mIsShowText = a.getBoolean(R.styleable.CircleProgressBar_isShowText, true);
+    if (mIsShowText) {
+      mPaintText.setTextAlign(Paint.Align.CENTER);
+      mPaintText.setTextSize(a.getDimensionPixelSize(R.styleable.CircleProgressBar_android_textSize,
+          Utils.sp2Pixel(context, 14)));
+      mPaintText.setColor(
+          a.getColor(R.styleable.CircleProgressBar_android_textColor, defaultTextColor));
+    }
 
     a.recycle();
   }
@@ -133,6 +139,24 @@ public class CircleProgressBar extends ProgressBar {
     invalidate();
   }
 
+  public boolean isShowText() {
+    return mIsShowText;
+  }
+
+  public void setShowText(boolean showText) {
+    mIsShowText = showText;
+    invalidate();
+  }
+
+  public void setTextSize(float size) {
+    mPaintText.setTextSize(size);
+    requestLayout();
+  }
+
+  public void setTextColor(@ColorInt int color) {
+    mPaintText.setColor(color);
+  }
+
   public int getSize() {
     return mSize;
   }
@@ -144,8 +168,8 @@ public class CircleProgressBar extends ProgressBar {
 
   @Override protected synchronized void onDraw(Canvas canvas) {
     drawCircle(canvas);
-    drawProgressText(canvas);
     drawStroke(canvas);
+    drawProgressText(canvas);
   }
 
   private void drawCircle(Canvas canvas) {
@@ -153,6 +177,9 @@ public class CircleProgressBar extends ProgressBar {
   }
 
   private void drawProgressText(Canvas canvas) {
+    if (!mIsShowText) {
+      return;
+    }
     String progressText = String.format(Locale.getDefault(), PROGRESS_TEXT_PATTERN, getProgress());
 
     mPaintText.getTextBounds(progressText, 0, progressText.length(), mProgressTextRect);

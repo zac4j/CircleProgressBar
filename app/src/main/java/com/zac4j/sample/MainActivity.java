@@ -1,9 +1,9 @@
 package com.zac4j.sample;
 
 import android.animation.ValueAnimator;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import com.zac4j.library.CircleProgressBar;
+import android.support.v7.app.AppCompatActivity;
+import com.zac4j.widget.CircleProgressBar;
 
 public class MainActivity extends AppCompatActivity {
 

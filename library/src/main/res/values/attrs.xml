@@ -9,6 +9,8 @@
     <attr format="color" name="strokeColor"/>
     <!-- Color of the donut circle background. -->
     <attr format="color" name="strokeBgColor"/>
+    <!-- Is need show progress text -->
+    <attr format="boolean" name="isShowText"/>
     <!--Text of progressbar center text -->
     <attr name="android:text"/>
     <!--Text size of progressbar center text -->

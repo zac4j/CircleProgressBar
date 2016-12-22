@@ -1,4 +1,4 @@
-package com.zac4j.library;
+package com.zac4j.widget;
 
 import android.content.Context;
 import android.util.TypedValue;
@@ -8,14 +8,14 @@ import android.util.TypedValue;
  * Created by zac on 12/20/2016.
  */
 
-class Utils {
+public class Utils {
 
-  static int dp2Pixel(Context context, float dp) {
+  public static int dp2Pixel(Context context, float dp) {
     return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
         context.getResources().getDisplayMetrics());
   }
 
-  static int sp2Pixel(Context context, float sp) {
+  public static int sp2Pixel(Context context, float sp) {
     return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, sp,
         context.getResources().getDisplayMetrics());
   }

@@ -5,6 +5,4 @@
   <dimen name="default_circle_progressbar_stroke_width">2dp</dimen>
   <color name="default_circle_progressbar_fill_color">#00000000</color>
   <color name="default_circle_progressbar_text_color">@color/black</color>
-  <dimen name="default_circle_progressbar_width">48dp</dimen>
-  <dimen name="default_circle_progressbar_height">48dp</dimen>
 </resources>

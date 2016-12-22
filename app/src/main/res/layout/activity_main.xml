@@ -9,21 +9,16 @@
     tools:context="com.zac4j.sample.MainActivity"
     >
 
-  <com.zac4j.library.CircleProgressBar
+  <com.zac4j.widget.CircleProgressBar
       android:id="@id/progress_bar"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      app:fillColor="@color/white"
-      app:strokeBgColor="@color/gray_light"
-      app:strokeColor="@color/purple"
-      app:size="large"
-      app:strokeWidth="4dp"
-      />
-
-  <ProgressBar
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
       android:layout_centerInParent="true"
+      android:textSize="16sp"
+      app:size="large"
+      app:strokeBgColor="@color/gray"
+      app:strokeColor="@color/purple"
+      app:strokeWidth="4dp"
       />
 
 </RelativeLayout>
