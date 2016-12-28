@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <declare-styleable name="CircleProgressBar">
+  <declare-styleable name="DonutProgressBar">
     <!-- Color of the filled circle. -->
     <attr format="color" name="fillColor"/>
     <!-- Width of the stroke used to draw circles. -->
@@ -17,18 +17,35 @@
     <attr name="android:textSize"/>
     <!--Text color of progressbar center text -->
     <attr name="android:textColor"/>
-    <!-- ProgressBar style -->
-    <!--<attr name="style">-->
-    <!--<enum name="donut" value="0"/>-->
-    <!--<enum name="wave" value="1"/>-->
-    <!--<enum name="watch" value="2"/>-->
-    <!--</attr>-->
     <!--ProgressBar size-->
     <attr name="size">
       <enum name="small" value="1"/>
       <enum name="medium" value="2"/>
       <enum name="large" value="3"/>
     </attr>
-
   </declare-styleable>
+
+  <declare-styleable name="WaveProgressBar">
+    <!-- Amplitude of the wave -->
+    <attr format="float" name="amplitude"/>
+    <!-- Waterline of the wave -->
+    <attr format="float" name="waterline"/>
+    <!-- Wavelength -->
+    <attr format="float" name="wavelength"/>
+    <!-- Shift of the wave -->
+    <attr format="float" name="shift"/>
+    <!-- Foreground of the wave -->
+    <attr name="android:foreground"/>
+    <!-- Background of the wave -->
+    <attr name="android:background"/>
+    <!-- Is need show progress text -->
+    <attr format="boolean" name="showText"/>
+    <!--Text of progressbar center text -->
+    <attr name="android:text"/>
+    <!--Text size of progressbar center text -->
+    <attr name="android:textSize"/>
+    <!--Text color of progressbar center text -->
+    <attr name="android:textColor"/>
+  </declare-styleable>
+
 </resources>

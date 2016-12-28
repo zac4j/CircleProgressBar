@@ -9,7 +9,7 @@
     tools:context="com.zac4j.sample.MainActivity"
     >
 
-  <com.zac4j.widget.CircleProgressBar
+  <com.zac4j.widget.DonutProgressBar
       android:id="@id/progress_bar"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"

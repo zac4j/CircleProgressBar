@@ -3,17 +3,17 @@ package com.zac4j.sample;
 import android.animation.ValueAnimator;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import com.zac4j.widget.CircleProgressBar;
+import com.zac4j.widget.DonutProgressBar;
 
 public class MainActivity extends AppCompatActivity {
 
-  private CircleProgressBar mProgressBar;
+  private DonutProgressBar mProgressBar;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
-    mProgressBar = (CircleProgressBar) findViewById(R.id.progress_bar);
+    mProgressBar = (DonutProgressBar) findViewById(R.id.progress_bar);
   }
 
   @Override protected void onResume() {

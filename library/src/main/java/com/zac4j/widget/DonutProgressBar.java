@@ -9,7 +9,6 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.support.annotation.ColorInt;
 import android.support.annotation.IntDef;
-import android.support.annotation.Size;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.widget.ProgressBar;
@@ -18,11 +17,11 @@ import java.lang.annotation.RetentionPolicy;
 import java.util.Locale;
 
 /**
- * Circle ProgressBar
+ * Progress Bar in donut style.
  * Created by zac on 12/19/2016.
  */
 
-public class CircleProgressBar extends ProgressBar {
+public class DonutProgressBar extends ProgressBar {
 
   private static final int SMALL = 1;
   private static final int MEDIUM = 2;
@@ -35,10 +34,10 @@ public class CircleProgressBar extends ProgressBar {
   private float mCenterX;
   private float mCenterY;
 
-  private Paint mPaintFill = new Paint(Paint.ANTI_ALIAS_FLAG);
-  private Paint mPaintStroke = new Paint(Paint.ANTI_ALIAS_FLAG);
-  private Paint mPaintStrokeBg = new Paint(Paint.ANTI_ALIAS_FLAG);
-  private Paint mPaintText = new Paint(Paint.ANTI_ALIAS_FLAG);
+  private Paint mFillPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+  private Paint mStrokePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+  private Paint mStrokeBgPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+  private Paint mTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
   private RectF mProgressRect = new RectF();
   private Rect mProgressTextRect = new Rect();
@@ -52,90 +51,89 @@ public class CircleProgressBar extends ProgressBar {
   @Retention(RetentionPolicy.SOURCE) @IntDef({ SMALL, MEDIUM, LARGER }) private @interface Size {
   }
 
-  public CircleProgressBar(Context context) {
+  public DonutProgressBar(Context context) {
     this(context, null);
   }
 
-  public CircleProgressBar(Context context, AttributeSet attrs) {
+  public DonutProgressBar(Context context, AttributeSet attrs) {
     this(context, attrs, 0);
   }
 
-  public CircleProgressBar(Context context, AttributeSet attrs, int defStyleAttr) {
+  public DonutProgressBar(Context context, AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
 
     // Load defaults from resources
     final Resources res = getResources();
     final float defaultStrokeWidth =
-        res.getDimension(R.dimen.default_circle_progressbar_stroke_width);
+        res.getDimension(R.dimen.default_donut_progressbar_stroke_width);
     final int defaultFillColor =
-        ContextCompat.getColor(context, R.color.default_circle_progressbar_fill_color);
+        ContextCompat.getColor(context, R.color.default_donut_progressbar_fill_color);
     final int defaultStrokeColor =
-        ContextCompat.getColor(context, R.color.default_circle_progressbar_stroke_color);
+        ContextCompat.getColor(context, R.color.default_donut_progressbar_stroke_color);
     final int defaultStrokeBgColor =
-        ContextCompat.getColor(context, R.color.default_circle_progressbar_stroke_bg_color);
+        ContextCompat.getColor(context, R.color.default_donut_progressbar_stroke_bg_color);
     final int defaultTextColor =
-        ContextCompat.getColor(context, R.color.default_circle_progressbar_text_color);
+        ContextCompat.getColor(context, R.color.default_donut_progressbar_text_color);
     mProgressBarSizeSmall = res.getDimension(R.dimen.progress_bar_size_small);
     mProgressBarSizeMedium = res.getDimension(R.dimen.progress_bar_size_medium);
     mProgressBarSizeLarger = res.getDimension(R.dimen.progress_bar_size_large);
 
     // Retrieve styles attributes
     TypedArray a =
-        context.obtainStyledAttributes(attrs, R.styleable.CircleProgressBar, defStyleAttr, 0);
+        context.obtainStyledAttributes(attrs, R.styleable.DonutProgressBar, defStyleAttr, 0);
 
-    mSize = a.getInt(R.styleable.CircleProgressBar_size, MEDIUM);
+    mSize = a.getInt(R.styleable.DonutProgressBar_size, MEDIUM);
 
-    mPaintFill.setStyle(Paint.Style.FILL);
-    mPaintFill.setColor(a.getColor(R.styleable.CircleProgressBar_fillColor, defaultFillColor));
+    mFillPaint.setStyle(Paint.Style.FILL);
+    mFillPaint.setColor(a.getColor(R.styleable.DonutProgressBar_fillColor, defaultFillColor));
 
-    mPaintStroke.setStyle(Paint.Style.STROKE);
-    mPaintStroke.setStrokeWidth(
-        a.getDimension(R.styleable.CircleProgressBar_strokeWidth, defaultStrokeWidth));
-    mPaintStroke.setColor(
-        a.getColor(R.styleable.CircleProgressBar_strokeColor, defaultStrokeColor));
+    mStrokePaint.setStyle(Paint.Style.STROKE);
+    mStrokePaint.setStrokeWidth(
+        a.getDimension(R.styleable.DonutProgressBar_strokeWidth, defaultStrokeWidth));
+    mStrokePaint.setColor(a.getColor(R.styleable.DonutProgressBar_strokeColor, defaultStrokeColor));
 
-    mPaintStrokeBg.setStyle(Paint.Style.STROKE);
-    mPaintStrokeBg.setStrokeWidth(
-        a.getDimension(R.styleable.CircleProgressBar_strokeWidth, defaultStrokeWidth));
-    mPaintStrokeBg.setColor(
-        a.getColor(R.styleable.CircleProgressBar_strokeBgColor, defaultStrokeBgColor));
+    mStrokeBgPaint.setStyle(Paint.Style.STROKE);
+    mStrokeBgPaint.setStrokeWidth(
+        a.getDimension(R.styleable.DonutProgressBar_strokeWidth, defaultStrokeWidth));
+    mStrokeBgPaint.setColor(
+        a.getColor(R.styleable.DonutProgressBar_strokeBgColor, defaultStrokeBgColor));
 
-    mIsShowText = a.getBoolean(R.styleable.CircleProgressBar_isShowText, true);
+    mIsShowText = a.getBoolean(R.styleable.DonutProgressBar_isShowText, true);
     if (mIsShowText) {
-      mPaintText.setTextAlign(Paint.Align.CENTER);
-      mPaintText.setTextSize(a.getDimensionPixelSize(R.styleable.CircleProgressBar_android_textSize,
+      mTextPaint.setTextAlign(Paint.Align.CENTER);
+      mTextPaint.setTextSize(a.getDimensionPixelSize(R.styleable.DonutProgressBar_android_textSize,
           Utils.sp2Pixel(context, 14)));
-      mPaintText.setColor(
-          a.getColor(R.styleable.CircleProgressBar_android_textColor, defaultTextColor));
+      mTextPaint.setColor(
+          a.getColor(R.styleable.DonutProgressBar_android_textColor, defaultTextColor));
     }
 
     a.recycle();
   }
 
   public int getFillColor() {
-    return mPaintFill.getColor();
+    return mFillPaint.getColor();
   }
 
   public void setFillColor(int fillColor) {
-    mPaintFill.setColor(fillColor);
+    mFillPaint.setColor(fillColor);
     invalidate();
   }
 
   public int getStrokeColor() {
-    return mPaintStroke.getColor();
+    return mStrokePaint.getColor();
   }
 
   public void setStrokeColor(int strokeColor) {
-    mPaintStroke.setColor(strokeColor);
+    mStrokePaint.setColor(strokeColor);
     invalidate();
   }
 
   public int getStrokeBackgroundColor() {
-    return mPaintStrokeBg.getColor();
+    return mStrokeBgPaint.getColor();
   }
 
   public void setStrokeBackgroundColor(int strokeBgColor) {
-    mPaintStrokeBg.setColor(strokeBgColor);
+    mStrokeBgPaint.setColor(strokeBgColor);
     invalidate();
   }
 
@@ -149,12 +147,12 @@ public class CircleProgressBar extends ProgressBar {
   }
 
   public void setTextSize(float size) {
-    mPaintText.setTextSize(size);
+    mTextPaint.setTextSize(size);
     requestLayout();
   }
 
   public void setTextColor(@ColorInt int color) {
-    mPaintText.setColor(color);
+    mTextPaint.setColor(color);
   }
 
   public int getSize() {
@@ -173,7 +171,7 @@ public class CircleProgressBar extends ProgressBar {
   }
 
   private void drawCircle(Canvas canvas) {
-    canvas.drawCircle(mCenterX, mCenterY, mRadius, mPaintFill);
+    canvas.drawCircle(mCenterX, mCenterY, mRadius, mFillPaint);
   }
 
   private void drawProgressText(Canvas canvas) {
@@ -182,14 +180,14 @@ public class CircleProgressBar extends ProgressBar {
     }
     String progressText = String.format(Locale.getDefault(), PROGRESS_TEXT_PATTERN, getProgress());
 
-    mPaintText.getTextBounds(progressText, 0, progressText.length(), mProgressTextRect);
-    canvas.drawText(progressText, mCenterX, (mCenterY + mProgressRect.height()) / 2, mPaintText);
+    mTextPaint.getTextBounds(progressText, 0, progressText.length(), mProgressTextRect);
+    canvas.drawText(progressText, mCenterX, (mCenterY + mProgressRect.height()) / 2, mTextPaint);
   }
 
   private void drawStroke(Canvas canvas) {
-    canvas.drawArc(mProgressRect, DEFAULT_START_DEGREE, 360.0f, false, mPaintStrokeBg);
+    canvas.drawArc(mProgressRect, DEFAULT_START_DEGREE, 360.0f, false, mStrokeBgPaint);
     canvas.drawArc(mProgressRect, DEFAULT_START_DEGREE, 360.0f * getProgress() / getMax(), false,
-        mPaintStroke);
+        mStrokePaint);
   }
 
   @Override protected synchronized void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -253,6 +251,6 @@ public class CircleProgressBar extends ProgressBar {
     mProgressRect.left = mCenterX - mRadius;
     mProgressRect.right = mCenterX + mRadius;
 
-    mProgressRect.inset(mPaintStroke.getStrokeWidth() / 2, mPaintStroke.getStrokeWidth() / 2);
+    mProgressRect.inset(mStrokePaint.getStrokeWidth() / 2, mStrokePaint.getStrokeWidth() / 2);
   }
 }

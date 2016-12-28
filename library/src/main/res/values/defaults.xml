@@ -1,8 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <color name="default_circle_progressbar_stroke_color">#673ab7</color>
-  <color name="default_circle_progressbar_stroke_bg_color">#FFDDDDDD</color>
-  <dimen name="default_circle_progressbar_stroke_width">2dp</dimen>
-  <color name="default_circle_progressbar_fill_color">#00000000</color>
-  <color name="default_circle_progressbar_text_color">@color/black</color>
+  <!-- DonutProgressBar default values -->
+  <color name="default_donut_progressbar_stroke_color">#673ab7</color>
+  <color name="default_donut_progressbar_stroke_bg_color">#FFDDDDDD</color>
+  <dimen name="default_donut_progressbar_stroke_width">2dp</dimen>
+  <color name="default_donut_progressbar_fill_color">#00000000</color>
+  <color name="default_donut_progressbar_text_color">@color/black</color>
+
+  <!-- WaveProgressBar default values -->
+  <color name="default_wave_progressbar_foreground">#FFDDDDDD</color>
+  <color name="default_wave_progressbar_background">@color/white</color>
+  <item format="float" name="default_wave_progressbar_amplitude" type="dimen">0.05</item>
+  <item format="float" name="default_wave_progressbar_wavelength" type="dimen">1.0</item>
+  <item format="float" name="default_wave_progressbar_waterline" type="dimen">0.5</item>
+  <item format="float" name="default_wave_progressbar_shift" type="dimen">0.0</item>
+  <color name="default_wave_progressbar_text_color">@color/black</color>
+
 </resources>
