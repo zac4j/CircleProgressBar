@@ -4,16 +4,19 @@ import android.animation.ValueAnimator;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import com.zac4j.widget.DonutProgressBar;
+import com.zac4j.widget.WaveProgressBar;
 
 public class MainActivity extends AppCompatActivity {
 
-  private DonutProgressBar mProgressBar;
+  private DonutProgressBar mDonutProgressBar;
+  private WaveProgressBar mWaveProgressBar;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
-    mProgressBar = (DonutProgressBar) findViewById(R.id.progress_bar);
+    mDonutProgressBar = (DonutProgressBar) findViewById(R.id.donut_progressbar);
+    mWaveProgressBar = (WaveProgressBar) findViewById(R.id.wave_progressbar);
   }
 
   @Override protected void onResume() {
@@ -26,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
       @Override public void onAnimationUpdate(ValueAnimator valueAnimator) {
         int progress = (int) valueAnimator.getAnimatedValue();
-        mProgressBar.setProgress(progress);
+        mWaveProgressBar.setProgress(progress);
       }
     });
     animator.setRepeatCount(10);

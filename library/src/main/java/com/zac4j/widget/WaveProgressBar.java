@@ -6,8 +6,8 @@ import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
-import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.Shader;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
@@ -21,20 +21,19 @@ import android.widget.ProgressBar;
 
 public class WaveProgressBar extends ProgressBar {
 
-  private BitmapShader mWaveShader;
-
-  private Matrix mShaderMatrix;
-
-  private Paint mWavePaint;
-  private Paint mTextPaint;
-
-  private int mWaveForeground;
-  private int mWaveBackground;
+  private Paint mBackWavePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+  private Paint mForeWavePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+  private Paint mBackgroundPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+  private Paint mTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
   private float mWaveAmplitude;
   private float mWavelength;
   private float mWaveShift;
   private float mWaterline;
+
+  private float mCenterX;
+  private float mCenterY;
+  private float mRadius;
 
   private boolean mIsShowText;
   private int mTextColor;
@@ -74,10 +73,16 @@ public class WaveProgressBar extends ProgressBar {
     TypedArray a =
         context.obtainStyledAttributes(attrs, R.styleable.WaveProgressBar, defStyleAttr, 0);
 
-    mWaveBackground =
-        a.getColor(R.styleable.WaveProgressBar_android_background, defaultWaveBackground);
-    mWaveForeground =
-        a.getColor(R.styleable.WaveProgressBar_android_foreground, defaultWaveForeground);
+    mBackWavePaint.setStrokeWidth(2);
+    mBackWavePaint.setStyle(Paint.Style.FILL);
+    mBackWavePaint.setColor(
+        a.getColor(R.styleable.WaveProgressBar_android_background, defaultWaveBackground));
+
+    mForeWavePaint.setStrokeWidth(2);
+    mForeWavePaint.setStyle(Paint.Style.FILL);
+    mForeWavePaint.setColor(
+        a.getColor(R.styleable.WaveProgressBar_android_foreground, defaultWaveForeground));
+
     mWaveAmplitude = a.getFloat(R.styleable.WaveProgressBar_amplitude, defaultAmplitude);
     mWavelength = a.getFloat(R.styleable.WaveProgressBar_wavelength, defaultWavelength);
     mWaterline = a.getFloat(R.styleable.WaveProgressBar_waterline, defaultWaterline);
@@ -93,45 +98,54 @@ public class WaveProgressBar extends ProgressBar {
     a.recycle();
   }
 
-  private void createShader() {
-    double angularFrequency = 2.0f * Math.PI / mWavelength / getWidth(); // angular frequency
-    float amplitude = getHeight() * mWaveAmplitude;
-    float waterline = getHeight() * mWaterline;
-    float wavelength = getWidth();
+  @Override protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+    super.onSizeChanged(w, h, oldw, oldh);
+
+    mCenterX = w / 2;
+    mCenterY = h / 2;
+
+    mRadius = Math.min(mCenterX, mCenterY);
+  }
+
+  @Override protected synchronized void onDraw(Canvas canvas) {
+    drawWave();
+    drawBackground(canvas);
+  }
+
+  private void drawBackground(Canvas canvas) {
+    canvas.drawCircle(mCenterX, mCenterY, mRadius, mBackgroundPaint);
+  }
+
+  /**
+   * y=Asin(ωx+φ)+h
+   */
+  private void drawWave() {
 
     Bitmap bitmap = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
     Canvas canvas = new Canvas(bitmap);
 
-    Paint wavePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    wavePaint.setStrokeWidth(2);
+    double ω = 2.0f * Math.PI / mWavelength / getWidth();
+    float A = mWaveAmplitude * getHeight();
+    float h = (1 - mWaterline) * getHeight();
+    float foreOffset = getWidth() / 4.0f;
 
-    final int endX = getWidth() + 1;
-    final int endY = getHeight() + 1;
+    int endX = getWidth() + 1;
+    int endY = getHeight() + 1;
 
-    float[] waveY = new float[endX];
+    float[] startYs = new float[endX];
 
-    wavePaint.setColor(mWaveBackground);
-    // y=Asin(ωx+φ)+h
-    for (int beginX = 0; beginX < endX; beginX++) {
-      double ωx = beginX * angularFrequency;
-      float beginY = (float) (waterline + amplitude * Math.sin(ωx));
-      canvas.drawLine(beginX, beginY, beginX, endY, wavePaint);
-
-      waveY[beginX] = beginY;
+    for (int startX = 0; startX < endX; startX++) {
+      float startY = (float) (A * Math.sin(ω * startX) + h);
+      canvas.drawLine(startX, startY, startX, endY, mBackWavePaint);
+      startYs[startX] = startY;
     }
 
-    wavePaint.setColor(mWaveForeground);
-    final int foreWaveShift = (int) (wavelength / 4);
-    for (int beginX = 0; beginX < endX; beginX++) {
-      canvas.drawLine(beginX, waveY[(beginX + foreWaveShift) % endX], beginX, endY, wavePaint);
+    for (int startX = 0; startX < endX; startX++) {
+      float startY = startYs[(int) ((startX + foreOffset) % endX)];
+      canvas.drawLine(startX, startY, startX, endY, mForeWavePaint);
     }
 
-    // Repeat in the horizontal orientation, clamp in the vertical orientation.
-    mWaveShader = new BitmapShader(bitmap, Shader.TileMode.REPEAT, Shader.TileMode.CLAMP);
-    mWavePaint.setShader(mWaveShader);
-  }
-
-  @Override protected synchronized void onDraw(Canvas canvas) {
-
+    BitmapShader shader = new BitmapShader(bitmap, Shader.TileMode.REPEAT, Shader.TileMode.CLAMP);
+    mBackgroundPaint.setShader(shader);
   }
 }

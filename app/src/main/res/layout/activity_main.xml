@@ -3,22 +3,29 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="16dp"
     tools:context="com.zac4j.sample.MainActivity"
     >
 
   <com.zac4j.widget.DonutProgressBar
-      android:id="@id/progress_bar"
+      android:id="@id/donut_progressbar"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_centerInParent="true"
+      android:layout_centerHorizontal="true"
       android:textSize="16sp"
       app:size="large"
       app:strokeBgColor="@color/gray"
       app:strokeColor="@color/purple"
       app:strokeWidth="4dp"
+      />
+
+  <com.zac4j.widget.WaveProgressBar
+      android:id="@id/wave_progressbar"
+      android:layout_width="144dp"
+      android:layout_height="144dp"
+      android:layout_centerInParent="true"
       />
 
 </RelativeLayout>
