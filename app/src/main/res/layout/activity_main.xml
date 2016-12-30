@@ -23,9 +23,11 @@
 
   <com.zac4j.widget.WaveProgressBar
       android:id="@id/wave_progressbar"
-      android:layout_width="144dp"
-      android:layout_height="144dp"
+      android:layout_width="72dp"
+      android:layout_height="72dp"
       android:layout_centerInParent="true"
+      app:backWaveColor="@color/purple"
+      app:foreWaveColor="@color/deep_purple"
       />
 
 </RelativeLayout>

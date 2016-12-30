@@ -25,15 +25,25 @@ public class MainActivity extends AppCompatActivity {
   }
 
   private void setProgress() {
-    ValueAnimator animator = ValueAnimator.ofInt(0, 100);
+
+    // required
+    mWaveProgressBar.setMax(60);
+    // required
+    mWaveProgressBar.setWaveDuration(5000);
+
+    ValueAnimator animator = ValueAnimator.ofInt(0, 60);
     animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
       @Override public void onAnimationUpdate(ValueAnimator valueAnimator) {
+
         int progress = (int) valueAnimator.getAnimatedValue();
+
+        mDonutProgressBar.setProgress(progress);
         mWaveProgressBar.setProgress(progress);
       }
     });
+
     animator.setRepeatCount(10);
-    animator.setDuration(6000);
+    animator.setDuration(5000);
     animator.start();
   }
 }

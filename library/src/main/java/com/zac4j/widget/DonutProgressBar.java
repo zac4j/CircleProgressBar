@@ -153,6 +153,7 @@ public class DonutProgressBar extends ProgressBar {
 
   public void setTextColor(@ColorInt int color) {
     mTextPaint.setColor(color);
+    invalidate();
   }
 
   public int getSize() {

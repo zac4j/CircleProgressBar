@@ -35,9 +35,9 @@
     <!-- Shift of the wave -->
     <attr format="float" name="shift"/>
     <!-- Foreground of the wave -->
-    <attr name="android:foreground"/>
+    <attr format="color" name="foreWaveColor"/>
     <!-- Background of the wave -->
-    <attr name="android:background"/>
+    <attr format="color" name="backWaveColor"/>
     <!-- Is need show progress text -->
     <attr format="boolean" name="showText"/>
     <!--Text of progressbar center text -->
