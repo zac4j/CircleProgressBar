@@ -9,8 +9,8 @@
     <attr format="color" name="strokeColor"/>
     <!-- Color of the donut circle background. -->
     <attr format="color" name="strokeBgColor"/>
-    <!-- Is need show progress text -->
-    <attr format="boolean" name="isShowText"/>
+    <!-- If show progress text -->
+    <attr format="boolean" name="showText"/>
     <!--Text of progressbar center text -->
     <attr name="android:text"/>
     <!--Text size of progressbar center text -->
@@ -23,29 +23,6 @@
       <enum name="medium" value="2"/>
       <enum name="large" value="3"/>
     </attr>
-  </declare-styleable>
-
-  <declare-styleable name="WaveProgressBar">
-    <!-- Amplitude of the wave -->
-    <attr format="float" name="amplitude"/>
-    <!-- Waterline of the wave -->
-    <attr format="float" name="waterline"/>
-    <!-- Wavelength -->
-    <attr format="float" name="wavelength"/>
-    <!-- Shift of the wave -->
-    <attr format="float" name="shift"/>
-    <!-- Foreground of the wave -->
-    <attr format="color" name="foreWaveColor"/>
-    <!-- Background of the wave -->
-    <attr format="color" name="backWaveColor"/>
-    <!-- Is need show progress text -->
-    <attr format="boolean" name="showText"/>
-    <!--Text of progressbar center text -->
-    <attr name="android:text"/>
-    <!--Text size of progressbar center text -->
-    <attr name="android:textSize"/>
-    <!--Text color of progressbar center text -->
-    <attr name="android:textColor"/>
   </declare-styleable>
 
 </resources>

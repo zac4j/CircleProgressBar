@@ -7,13 +7,4 @@
   <color name="default_donut_progressbar_fill_color">#00000000</color>
   <color name="default_donut_progressbar_text_color">@color/black</color>
 
-  <!-- WaveProgressBar default values -->
-  <color name="default_wave_progressbar_foreground">@color/blue_gray</color>
-  <color name="default_wave_progressbar_background">@color/gray</color>
-  <item format="float" name="default_wave_progressbar_amplitude" type="dimen">0.1</item>
-  <item format="float" name="default_wave_progressbar_wavelength" type="dimen">1.0</item>
-  <item format="float" name="default_wave_progressbar_waterline" type="dimen">0.25</item>
-  <item format="float" name="default_wave_progressbar_shift" type="dimen">0.0</item>
-  <color name="default_wave_progressbar_text_color">@color/black</color>
-
 </resources>

@@ -46,7 +46,7 @@ public class DonutProgressBar extends ProgressBar {
   private final float mProgressBarSizeSmall;
   private final float mProgressBarSizeMedium;
   private final float mProgressBarSizeLarger;
-  private boolean mIsShowText;
+  private boolean mShowText;
 
   @Retention(RetentionPolicy.SOURCE) @IntDef({ SMALL, MEDIUM, LARGER }) private @interface Size {
   }
@@ -98,8 +98,8 @@ public class DonutProgressBar extends ProgressBar {
     mStrokeBgPaint.setColor(
         a.getColor(R.styleable.DonutProgressBar_strokeBgColor, defaultStrokeBgColor));
 
-    mIsShowText = a.getBoolean(R.styleable.DonutProgressBar_isShowText, true);
-    if (mIsShowText) {
+    mShowText = a.getBoolean(R.styleable.DonutProgressBar_showText, true);
+    if (mShowText) {
       mTextPaint.setTextAlign(Paint.Align.CENTER);
       mTextPaint.setTextSize(a.getDimensionPixelSize(R.styleable.DonutProgressBar_android_textSize,
           Utils.sp2Pixel(context, 14)));
@@ -138,11 +138,11 @@ public class DonutProgressBar extends ProgressBar {
   }
 
   public boolean isShowText() {
-    return mIsShowText;
+    return mShowText;
   }
 
   public void setShowText(boolean showText) {
-    mIsShowText = showText;
+    mShowText = showText;
     invalidate();
   }
 
@@ -176,7 +176,7 @@ public class DonutProgressBar extends ProgressBar {
   }
 
   private void drawProgressText(Canvas canvas) {
-    if (!mIsShowText) {
+    if (!mShowText) {
       return;
     }
     String progressText = String.format(Locale.getDefault(), PROGRESS_TEXT_PATTERN, getProgress());

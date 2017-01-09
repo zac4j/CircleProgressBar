@@ -13,21 +13,12 @@
       android:id="@id/donut_progressbar"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_centerHorizontal="true"
+      android:layout_centerInParent="true"
       android:textSize="16sp"
       app:size="large"
       app:strokeBgColor="@color/gray"
       app:strokeColor="@color/purple"
       app:strokeWidth="4dp"
-      />
-
-  <com.zac4j.widget.WaveProgressBar
-      android:id="@id/wave_progressbar"
-      android:layout_width="72dp"
-      android:layout_height="72dp"
-      android:layout_centerInParent="true"
-      app:backWaveColor="@color/purple"
-      app:foreWaveColor="@color/deep_purple"
       />
 
 </RelativeLayout>
