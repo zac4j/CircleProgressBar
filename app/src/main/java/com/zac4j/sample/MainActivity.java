@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     });
 
     animator.setRepeatCount(10);
-    animator.setDuration(6000);
+    animator.setDuration(8000);
     animator.start();
   }
 }

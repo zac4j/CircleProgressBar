@@ -2,7 +2,7 @@
 Circle Progress Bar for Android applications. DonutProgressBar inspired by MIUI.
 
 ## Screenshots
-
+![donut][donut]
 
 ## Getting Started
 **CircleProgressBar** (min API 16):
@@ -39,7 +39,7 @@ dependencies {
 </RelativeLayout>
 ```
 #### 3.On activity onResume() method set progress animator:
-```java
+```
 private void setProgress() {
   ValueAnimator animator = ValueAnimator.ofInt(0, 100);
   animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -77,4 +77,5 @@ private void setProgress() {
 ## License
 The code is available under the [Apache License][license]
 
+[donut]:http://7xom3t.com1.z0.glb.clouddn.com/donutprogressbar.gif
 [license]:https://github.com/zac4j/CircleProgressBar/blob/master/LICENSE
