@@ -44,7 +44,6 @@ private void setProgress() {
   ValueAnimator animator = ValueAnimator.ofInt(0, 100);
   animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
     @Override public void onAnimationUpdate(ValueAnimator valueAnimator) {
-
       int progress = (int) valueAnimator.getAnimatedValue();
 
       mDonutProgressBar.setProgress(progress);
