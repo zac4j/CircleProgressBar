@@ -1,28 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+  <!-- Width of the stroke used to draw progress. -->
+  <attr format="dimension" name="progressWidth"/>
+  <!-- If show progress text -->
+  <attr format="boolean" name="showText"/>
+  <!-- Color of the donut circle background. -->
+  <attr format="color" name="progressBgColor"/>
+
   <declare-styleable name="DonutProgressBar">
-    <!-- Color of the filled circle. -->
-    <attr format="color" name="fillColor"/>
-    <!-- Width of the stroke used to draw circles. -->
-    <attr format="dimension" name="strokeWidth"/>
-    <!-- Color of the donut circles. -->
-    <attr format="color" name="strokeColor"/>
+    <!-- Width of the stroke used to draw progress. -->
+    <attr name="progressWidth"/>
+    <!--ProgressBar size-->
+    <attr name="donutSize">
+      <enum name="small" value="1"/>
+      <enum name="medium" value="2"/>
+      <enum name="large" value="3"/>
+    </attr>
     <!-- Color of the donut circle background. -->
-    <attr format="color" name="strokeBgColor"/>
+    <attr name="progressBgColor"/>
+    <!-- Color of the inter circle. -->
+    <attr format="color" name="fillColor"/>
+    <!-- Color of the donut circles. -->
+    <attr format="color" name="progressColor"/>
     <!-- If show progress text -->
-    <attr format="boolean" name="showText"/>
+    <attr name="showText"/>
     <!--Text of progressbar center text -->
     <attr name="android:text"/>
     <!--Text size of progressbar center text -->
     <attr name="android:textSize"/>
     <!--Text color of progressbar center text -->
     <attr name="android:textColor"/>
+  </declare-styleable>
+
+  <declare-styleable name="HuaProgressBar">
+    <!-- Width of the stroke used to draw progress. -->
+    <attr name="progressWidth"/>
     <!--ProgressBar size-->
-    <attr name="size">
+    <attr name="huaSize">
       <enum name="small" value="1"/>
       <enum name="medium" value="2"/>
       <enum name="large" value="3"/>
     </attr>
+    <!-- Start color of the chrysanthemum progress. -->
+    <attr format="color" name="progressStartColor"/>
+    <!-- End color of the chrysanthemum progress. -->
+    <attr format="color" name="progressEndColor"/>
+    <!-- Background color of the chrysanthemum progress. -->
+    <attr name="progressBgColor"/>
+    <!-- If show progress text -->
+    <attr name="showText"/>
+    <!--Text of progressbar center text -->
+    <attr name="android:text"/>
+    <!--Text size of progressbar center text -->
+    <attr name="android:textSize"/>
+    <!--Text color of progressbar center text -->
+    <attr name="android:textColor"/>
   </declare-styleable>
-
 </resources>

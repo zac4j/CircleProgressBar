@@ -13,12 +13,20 @@
       android:id="@id/donut_progressbar"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_centerInParent="true"
+      android:layout_centerHorizontal="true"
       android:textSize="16sp"
-      app:size="large"
-      app:strokeBgColor="@color/gray"
-      app:strokeColor="@color/purple"
-      app:strokeWidth="4dp"
+      app:progressBgColor="@color/gray"
+      app:progressColor="@color/purple"
+      app:progressWidth="4dp"
+      app:donutSize="large"
+      />
+
+  <com.zac4j.widget.HuaProgressBar
+      android:id="@id/hua_progressbar"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_centerInParent="true"
+      app:huaSize="medium"
       />
 
 </RelativeLayout>

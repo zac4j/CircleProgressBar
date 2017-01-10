@@ -2,4 +2,5 @@
 <resources>
   <item name="wave_progressbar" type="id"/>
   <item name="donut_progressbar" type="id"/>
+  <item name="hua_progressbar" type="id"/>
 </resources>

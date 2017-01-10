@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <!-- DonutProgressBar default values -->
-  <color name="default_donut_progressbar_stroke_color">#673ab7</color>
-  <color name="default_donut_progressbar_stroke_bg_color">#FFDDDDDD</color>
-  <dimen name="default_donut_progressbar_stroke_width">2dp</dimen>
+  <color name="default_donut_progressbar_progress_color">#673ab7</color>
+  <color name="default_donut_progressbar_progress_bg_color">#FFDDDDDD</color>
+  <dimen name="default_donut_progressbar_progress_width">2dp</dimen>
   <color name="default_donut_progressbar_fill_color">#00000000</color>
   <color name="default_donut_progressbar_text_color">@color/black</color>
+
+  <!-- HuaProgressBar default values -->
+  <color name="default_hua_progressbar_start_color">#ffffffff</color>
+  <color name="default_hua_progressbar_end_color">#ff898989</color>
+  <color name="default_hua_progressbar_background_color">#ff898989</color>
+  <dimen name="default_hua_progressbar_line_width">4dp</dimen>
+  <color name="default_hua_progressbar_fill_color">#00000000</color>
+  <color name="default_hua_progressbar_text_color">@color/black</color>
 
 </resources>

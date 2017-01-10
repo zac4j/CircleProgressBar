@@ -35,8 +35,8 @@ public class DonutProgressBar extends ProgressBar {
   private float mCenterY;
 
   private Paint mFillPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-  private Paint mStrokePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-  private Paint mStrokeBgPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+  private Paint mProgressPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+  private Paint mProgressBgPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
   private Paint mTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
   private RectF mProgressRect = new RectF();
@@ -64,14 +64,14 @@ public class DonutProgressBar extends ProgressBar {
 
     // Load defaults from resources
     final Resources res = getResources();
-    final float defaultStrokeWidth =
-        res.getDimension(R.dimen.default_donut_progressbar_stroke_width);
+    final float defaultProgressWidth =
+        res.getDimension(R.dimen.default_donut_progressbar_progress_width);
     final int defaultFillColor =
         ContextCompat.getColor(context, R.color.default_donut_progressbar_fill_color);
-    final int defaultStrokeColor =
-        ContextCompat.getColor(context, R.color.default_donut_progressbar_stroke_color);
-    final int defaultStrokeBgColor =
-        ContextCompat.getColor(context, R.color.default_donut_progressbar_stroke_bg_color);
+    final int defaultProgressColor =
+        ContextCompat.getColor(context, R.color.default_donut_progressbar_progress_color);
+    final int defaultProgressBgColor =
+        ContextCompat.getColor(context, R.color.default_donut_progressbar_progress_bg_color);
     final int defaultTextColor =
         ContextCompat.getColor(context, R.color.default_donut_progressbar_text_color);
     mProgressBarSizeSmall = res.getDimension(R.dimen.progress_bar_size_small);
@@ -82,21 +82,22 @@ public class DonutProgressBar extends ProgressBar {
     TypedArray a =
         context.obtainStyledAttributes(attrs, R.styleable.DonutProgressBar, defStyleAttr, 0);
 
-    mSize = a.getInt(R.styleable.DonutProgressBar_size, MEDIUM);
+    mSize = a.getInt(R.styleable.DonutProgressBar_donutSize, MEDIUM);
 
     mFillPaint.setStyle(Paint.Style.FILL);
     mFillPaint.setColor(a.getColor(R.styleable.DonutProgressBar_fillColor, defaultFillColor));
 
-    mStrokePaint.setStyle(Paint.Style.STROKE);
-    mStrokePaint.setStrokeWidth(
-        a.getDimension(R.styleable.DonutProgressBar_strokeWidth, defaultStrokeWidth));
-    mStrokePaint.setColor(a.getColor(R.styleable.DonutProgressBar_strokeColor, defaultStrokeColor));
+    mProgressPaint.setStyle(Paint.Style.STROKE);
+    mProgressPaint.setStrokeWidth(
+        a.getDimension(R.styleable.DonutProgressBar_progressWidth, defaultProgressWidth));
+    mProgressPaint.setColor(
+        a.getColor(R.styleable.DonutProgressBar_progressColor, defaultProgressColor));
 
-    mStrokeBgPaint.setStyle(Paint.Style.STROKE);
-    mStrokeBgPaint.setStrokeWidth(
-        a.getDimension(R.styleable.DonutProgressBar_strokeWidth, defaultStrokeWidth));
-    mStrokeBgPaint.setColor(
-        a.getColor(R.styleable.DonutProgressBar_strokeBgColor, defaultStrokeBgColor));
+    mProgressBgPaint.setStyle(Paint.Style.STROKE);
+    mProgressBgPaint.setStrokeWidth(
+        a.getDimension(R.styleable.DonutProgressBar_progressWidth, defaultProgressWidth));
+    mProgressBgPaint.setColor(
+        a.getColor(R.styleable.DonutProgressBar_progressBgColor, defaultProgressBgColor));
 
     mShowText = a.getBoolean(R.styleable.DonutProgressBar_showText, true);
     if (mShowText) {
@@ -119,21 +120,21 @@ public class DonutProgressBar extends ProgressBar {
     invalidate();
   }
 
-  public int getStrokeColor() {
-    return mStrokePaint.getColor();
+  public int getProgressColor() {
+    return mProgressPaint.getColor();
   }
 
-  public void setStrokeColor(int strokeColor) {
-    mStrokePaint.setColor(strokeColor);
+  public void setProgressColor(int progressColor) {
+    mProgressPaint.setColor(progressColor);
     invalidate();
   }
 
-  public int getStrokeBackgroundColor() {
-    return mStrokeBgPaint.getColor();
+  public int getProgressBackgroundColor() {
+    return mProgressBgPaint.getColor();
   }
 
-  public void setStrokeBackgroundColor(int strokeBgColor) {
-    mStrokeBgPaint.setColor(strokeBgColor);
+  public void setProgressBackgroundColor(int progressBgColor) {
+    mProgressBgPaint.setColor(progressBgColor);
     invalidate();
   }
 
@@ -167,7 +168,7 @@ public class DonutProgressBar extends ProgressBar {
 
   @Override protected synchronized void onDraw(Canvas canvas) {
     drawCircle(canvas);
-    drawStroke(canvas);
+    drawProgress(canvas);
     drawProgressText(canvas);
   }
 
@@ -185,10 +186,10 @@ public class DonutProgressBar extends ProgressBar {
     canvas.drawText(progressText, mCenterX, (mCenterY + mProgressRect.height()) / 2, mTextPaint);
   }
 
-  private void drawStroke(Canvas canvas) {
-    canvas.drawArc(mProgressRect, DEFAULT_START_DEGREE, 360.0f, false, mStrokeBgPaint);
+  private void drawProgress(Canvas canvas) {
+    canvas.drawArc(mProgressRect, DEFAULT_START_DEGREE, 360.0f, false, mProgressBgPaint);
     canvas.drawArc(mProgressRect, DEFAULT_START_DEGREE, 360.0f * getProgress() / getMax(), false,
-        mStrokePaint);
+        mProgressPaint);
   }
 
   @Override protected synchronized void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -252,6 +253,6 @@ public class DonutProgressBar extends ProgressBar {
     mProgressRect.left = mCenterX - mRadius;
     mProgressRect.right = mCenterX + mRadius;
 
-    mProgressRect.inset(mStrokePaint.getStrokeWidth() / 2, mStrokePaint.getStrokeWidth() / 2);
+    mProgressRect.inset(mProgressPaint.getStrokeWidth() / 2, mProgressPaint.getStrokeWidth() / 2);
   }
 }
