@@ -12,7 +12,7 @@
 #### 1.This library is available on Maven Central, you can find it with Gradle:
 ```groovy
 dependencies {
-  compile 'com.zac4j.library:circleprogressbar:0.1.0'
+  compile 'com.zac4j.library:circleprogressbar:0.1.1'
 }
 ```
 #### 2.Add the ProgressBar widget in your xml file:
