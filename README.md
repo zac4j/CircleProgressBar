@@ -1,16 +1,15 @@
 # CircleProgressBar
 - Circle Progress Bar for Android applications.
-  - DonutProgressBar inspired by MIUI.
-  - HuaProgressBar inspired by UIActivityIndicatorView on iOS, also named 菊花(JuHua) in Chinese.
-  - WaveProgressBar inspired by AliPay android app face recognition login UI.
+  - **DonutProgressBar** inspired by MIUI.
+  - **HuaProgressBar** inspired by UIActivityIndicatorView on iOS, also named 菊花(JuHua) in Chinese.
+  - **WaveProgressBar** inspired by AliPay android app face recognition login UI.
 
 ## Screenshots
-![donut][donut]
+![progressbar][progressbar]
 
 ## Getting Started
 **CircleProgressBar** (min API 16):
 #### 1.This library is available on Maven Central, you can find it with Gradle:
-
 ```groovy
 dependencies {
   compile 'com.zac4j.library:circleprogressbar:0.1.0'
@@ -105,5 +104,5 @@ private void setProgress() {
 ## License
 The code is available under the [Apache License][license]
 
-[donut]:http://7xom3t.com1.z0.glb.clouddn.com/donutprogressbar.gif
+[progressbar]:http://7xom3t.com1.z0.glb.clouddn.com/progressbar.gif
 [license]:https://github.com/zac4j/CircleProgressBar/blob/master/LICENSE
