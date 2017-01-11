@@ -117,7 +117,7 @@ public class DonutProgressBar extends ProgressBar {
 
   public void setFillColor(int fillColor) {
     mFillPaint.setColor(fillColor);
-    invalidate();
+    postInvalidate();
   }
 
   public int getProgressColor() {
@@ -126,7 +126,7 @@ public class DonutProgressBar extends ProgressBar {
 
   public void setProgressColor(int progressColor) {
     mProgressPaint.setColor(progressColor);
-    invalidate();
+    postInvalidate();
   }
 
   public int getProgressBackgroundColor() {
@@ -135,7 +135,7 @@ public class DonutProgressBar extends ProgressBar {
 
   public void setProgressBackgroundColor(int progressBgColor) {
     mProgressBgPaint.setColor(progressBgColor);
-    invalidate();
+    postInvalidate();
   }
 
   public boolean isShowText() {
@@ -144,7 +144,7 @@ public class DonutProgressBar extends ProgressBar {
 
   public void setShowText(boolean showText) {
     mShowText = showText;
-    invalidate();
+    postInvalidate();
   }
 
   public void setTextSize(float size) {
@@ -154,7 +154,7 @@ public class DonutProgressBar extends ProgressBar {
 
   public void setTextColor(@ColorInt int color) {
     mTextPaint.setColor(color);
-    invalidate();
+    postInvalidate();
   }
 
   public int getSize() {

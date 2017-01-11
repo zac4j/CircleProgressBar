@@ -14,11 +14,10 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_centerHorizontal="true"
-      android:textSize="16sp"
+      app:donutSize="medium"
       app:progressBgColor="@color/gray"
       app:progressColor="@color/purple"
       app:progressWidth="4dp"
-      app:donutSize="large"
       />
 
   <com.zac4j.widget.HuaProgressBar
@@ -26,7 +25,12 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_centerInParent="true"
+      android:textColor="@color/deep_orange"
+      android:textSize="12sp"
       app:huaSize="medium"
+      app:progressEndColor="@color/gray_light"
+      app:progressStartColor="@color/orange"
+      app:showText="true"
       />
 
 </RelativeLayout>

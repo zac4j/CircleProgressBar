@@ -8,10 +8,11 @@
   <color name="default_donut_progressbar_text_color">@color/black</color>
 
   <!-- HuaProgressBar default values -->
-  <color name="default_hua_progressbar_start_color">#ffffffff</color>
-  <color name="default_hua_progressbar_end_color">#ff898989</color>
-  <color name="default_hua_progressbar_background_color">#ff898989</color>
-  <dimen name="default_hua_progressbar_line_width">4dp</dimen>
+  <color name="default_hua_progressbar_start_color">#edeaea</color>
+  <color name="default_hua_progressbar_end_color">#898989</color>
+  <dimen name="default_hua_progressbar_line_width_small">1dp</dimen>
+  <dimen name="default_hua_progressbar_line_width_medium">3dp</dimen>
+  <dimen name="default_hua_progressbar_line_width_large">4dp</dimen>
   <color name="default_hua_progressbar_fill_color">#00000000</color>
   <color name="default_hua_progressbar_text_color">@color/black</color>
 

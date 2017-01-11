@@ -1,5 +1,7 @@
 package com.zac4j.widget;
 
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
@@ -10,9 +12,13 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.SweepGradient;
+import android.support.annotation.ColorInt;
 import android.support.annotation.IntDef;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
+import android.view.View;
+import android.view.animation.Interpolator;
+import android.view.animation.LinearInterpolator;
 import android.widget.ProgressBar;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -30,7 +36,6 @@ public class HuaProgressBar extends ProgressBar {
   private static final int LARGER = 3;
 
   private static final int DEFAULT_PETAL_COUNT = 12;
-  private static final float DEFAULT_START_DEGREE = -90.0f;
   private static final String PROGRESS_TEXT_PATTERN = "%d%%";
 
   private int mProgressStartColor;
@@ -41,18 +46,24 @@ public class HuaProgressBar extends ProgressBar {
   private float mCenterY;
 
   private Paint mProgressPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-  private Paint mProgressBgPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
   private Paint mTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
   private RectF mProgressRect = new RectF();
   private Rect mProgressTextRect = new Rect();
 
+  private ObjectAnimator mAnimator;
   private boolean mShowProgressText;
   private int mSize;
+  private float mRotateDegree;
 
-  private final float mProgressBarSizeSmall;
-  private final float mProgressBarSizeMedium;
-  private final float mProgressBarSizeLarger;
+  private long mDuration;
+  private Interpolator mInterpolator;
+  private int mAnimatorRepeatCount;
+  private int mAnimatorRepeatMode;
+
+  private float mProgressBarSizeSmall;
+  private float mProgressBarSizeMedium;
+  private float mProgressBarSizeLarger;
 
   @Retention(RetentionPolicy.SOURCE) @IntDef({ SMALL, MEDIUM, LARGER }) private @interface Size {
   }
@@ -68,15 +79,20 @@ public class HuaProgressBar extends ProgressBar {
   public HuaProgressBar(Context context, AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
 
+    initProgressBar();
+
     // Load defaults from resources
     final Resources res = getResources();
-    final float defaultProgressWidth = res.getDimension(R.dimen.default_hua_progressbar_line_width);
+    final float defaultProgressWidthSmall =
+        res.getDimension(R.dimen.default_hua_progressbar_line_width_small);
+    final float defaultProgressWidthMedium =
+        res.getDimension(R.dimen.default_hua_progressbar_line_width_medium);
+    final float defaultProgressWidthLarge =
+        res.getDimension(R.dimen.default_hua_progressbar_line_width_large);
     final int defaultProgressStartColor =
         ContextCompat.getColor(context, R.color.default_hua_progressbar_start_color);
     final int defaultProgressEndColor =
         ContextCompat.getColor(context, R.color.default_hua_progressbar_end_color);
-    final int defaultProgressBgColor =
-        ContextCompat.getColor(context, R.color.default_hua_progressbar_background_color);
     final int defaultTextColor =
         ContextCompat.getColor(context, R.color.default_hua_progressbar_text_color);
     mProgressBarSizeSmall = res.getDimension(R.dimen.progress_bar_size_small);
@@ -84,10 +100,18 @@ public class HuaProgressBar extends ProgressBar {
     mProgressBarSizeLarger = res.getDimension(R.dimen.progress_bar_size_large);
 
     // Retrieve styles attributes
-    TypedArray a =
+    final TypedArray a =
         context.obtainStyledAttributes(attrs, R.styleable.HuaProgressBar, defStyleAttr, 0);
 
     mSize = a.getInt(R.styleable.HuaProgressBar_huaSize, MEDIUM);
+
+    float progressWidth = defaultProgressWidthMedium;
+
+    if (mSize == SMALL) {
+      progressWidth = defaultProgressWidthSmall;
+    } else if (mSize == LARGER) {
+      progressWidth = defaultProgressWidthLarge;
+    }
 
     mProgressStartColor =
         a.getColor(R.styleable.HuaProgressBar_progressStartColor, defaultProgressStartColor);
@@ -96,18 +120,11 @@ public class HuaProgressBar extends ProgressBar {
 
     mProgressPaint.setStyle(Paint.Style.STROKE);
     mProgressPaint.setStrokeWidth(
-        a.getDimension(R.styleable.HuaProgressBar_progressWidth, defaultProgressWidth));
+        a.getDimension(R.styleable.HuaProgressBar_progressWidth, progressWidth));
     mProgressPaint.setColor(mProgressStartColor);
     mProgressPaint.setStrokeCap(Paint.Cap.ROUND);
 
-    mProgressBgPaint.setStyle(Paint.Style.STROKE);
-    mProgressBgPaint.setStrokeWidth(
-        a.getDimension(R.styleable.HuaProgressBar_progressWidth, defaultProgressWidth));
-    mProgressBgPaint.setColor(
-        a.getColor(R.styleable.HuaProgressBar_progressBgColor, defaultProgressBgColor));
-    mProgressBgPaint.setStrokeCap(Paint.Cap.ROUND);
-
-    mShowProgressText = a.getBoolean(R.styleable.HuaProgressBar_showText, true);
+    mShowProgressText = a.getBoolean(R.styleable.HuaProgressBar_showText, mSize == LARGER);
     if (mShowProgressText) {
       mTextPaint.setTextAlign(Paint.Align.CENTER);
       mTextPaint.setTextSize(a.getDimensionPixelSize(R.styleable.HuaProgressBar_android_textSize,
@@ -117,6 +134,16 @@ public class HuaProgressBar extends ProgressBar {
     }
 
     a.recycle();
+  }
+
+  /**
+   * Initialize default animator value
+   */
+  private void initProgressBar() {
+    mDuration = 1000L;
+    mInterpolator = new LinearInterpolator();
+    mAnimatorRepeatMode = ValueAnimator.RESTART;
+    mAnimatorRepeatCount = ValueAnimator.INFINITE;
   }
 
   @Override protected void onSizeChanged(int w, int h, int oldw, int oldh) {
@@ -129,18 +156,116 @@ public class HuaProgressBar extends ProgressBar {
     mProgressRect.bottom = mCenterY + mRadius;
     mProgressRect.left = mCenterX - mRadius;
     mProgressRect.right = mCenterX + mRadius;
-
-    updateProgressShader();
   }
 
-  private void updateProgressShader() {
+  private void createProgressShader() {
     Shader shader =
-        new SweepGradient(mCenterX, mCenterY, new int[] { mProgressStartColor, mProgressEndColor },
+        new SweepGradient(mCenterX, mCenterY, new int[] { mProgressEndColor, mProgressStartColor },
             new float[] { 0.0f, 1.0f });
     Matrix matrix = new Matrix();
-    matrix.postRotate(DEFAULT_START_DEGREE, mCenterX, mCenterY);
+    matrix.postRotate(mRotateDegree, mCenterX, mCenterY);
     shader.setLocalMatrix(matrix);
     mProgressPaint.setShader(shader);
+  }
+
+  public int getProgressStartColor() {
+    return mProgressStartColor;
+  }
+
+  public void setProgressStartColor(@ColorInt int progressStartColor) {
+    mProgressStartColor = progressStartColor;
+    postInvalidate();
+  }
+
+  public int getProgressEndColor() {
+    return mProgressEndColor;
+  }
+
+  public void setProgressEndColor(@ColorInt int progressEndColor) {
+    mProgressEndColor = progressEndColor;
+    postInvalidate();
+  }
+
+  public float getRotateDegree() {
+    return mRotateDegree;
+  }
+
+  public void setRotateDegree(float rotateDegree) {
+    mRotateDegree = rotateDegree;
+    postInvalidate();
+  }
+
+  public int getSize() {
+    return mSize;
+  }
+
+  public void setSize(@Size int size) {
+    mSize = size;
+    requestLayout();
+  }
+
+  @Override protected void onAttachedToWindow() {
+    super.onAttachedToWindow();
+    startAnimator();
+  }
+
+  @Override protected void onDetachedFromWindow() {
+    stopAnimators();
+    super.onDetachedFromWindow();
+  }
+
+  @Override public void setVisibility(int visibility) {
+    super.setVisibility(visibility);
+    if (getVisibility() == visibility) {
+      return;
+    }
+
+    if (visibility == GONE || visibility == INVISIBLE) {
+      stopAnimators();
+    } else {
+      startAnimator();
+    }
+  }
+
+  @Override protected void onVisibilityChanged(View changedView, int visibility) {
+    super.onVisibilityChanged(changedView, visibility);
+
+    if (visibility == GONE || visibility == INVISIBLE) {
+      stopAnimators();
+    } else {
+      startAnimator();
+    }
+  }
+
+  private void startAnimator() {
+    if (isInEditMode()) return;
+
+    if (getVisibility() != VISIBLE) {
+      return;
+    }
+
+    if (mInterpolator == null) {
+      mInterpolator = new LinearInterpolator();
+    }
+
+    if (mAnimator == null) {
+      mAnimator = ObjectAnimator.ofFloat(this, "rotateDegree", 0.0f, 360.0f);
+      mAnimator.setRepeatMode(mAnimatorRepeatMode);
+      mAnimator.setRepeatCount(mAnimatorRepeatCount);
+      mAnimator.setDuration(mDuration);
+      mAnimator.setInterpolator(mInterpolator);
+      mAnimator.start();
+    }
+
+    postInvalidate();
+  }
+
+  private void stopAnimators() {
+    if (mAnimator != null) {
+      mAnimator.cancel();
+      mAnimator = null;
+    }
+    postInvalidate();
   }
 
   @Override protected synchronized void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -190,14 +315,15 @@ public class HuaProgressBar extends ProgressBar {
   }
 
   @Override protected synchronized void onDraw(Canvas canvas) {
-    drawProgressBackground(canvas);
+    createProgressShader();
+    drawProgress(canvas);
     drawProgressText(canvas);
   }
 
-  private void drawProgressBackground(Canvas canvas) {
+  private void drawProgress(Canvas canvas) {
     float unitDegrees = (float) (2.0f * Math.PI / DEFAULT_PETAL_COUNT);
     float outerCircleRadius = mRadius;
-    float interCircleRadius = mRadius / 2;
+    float interCircleRadius = mRadius * 0.5f;
 
     for (int i = 0; i < DEFAULT_PETAL_COUNT; i++) {
       float rotateDegrees = i * unitDegrees;
@@ -208,7 +334,7 @@ public class HuaProgressBar extends ProgressBar {
       float stopX = mCenterX + (float) Math.sin(rotateDegrees) * outerCircleRadius;
       float stopY = mCenterX - (float) Math.cos(rotateDegrees) * outerCircleRadius;
 
-      canvas.drawLine(startX, startY, stopX, stopY, mProgressBgPaint);
+      canvas.drawLine(startX, startY, stopX, stopY, mProgressPaint);
     }
   }
 
