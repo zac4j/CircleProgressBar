@@ -315,6 +315,9 @@ public class HuaProgressBar extends ProgressBar {
   }
 
   @Override protected synchronized void onDraw(Canvas canvas) {
+    if (getProgress() == getMax()) {
+      stopAnimators();
+    }
     createProgressShader();
     drawProgress(canvas);
     drawProgressText(canvas);
